@@ -5,6 +5,8 @@ import com.dataintuitive.luciuscore.Model.DbRow
 import org.apache.spark.rdd.RDD
 import scala.collection.immutable.Map
 
+case class ListMapStringAny(Result: List[Map[String, Any]])
+
 /**
   * Created by toni on 29/11/16.
   */
@@ -12,7 +14,7 @@ object CheckSignatureFunctions extends Functions {
 
   type Input = (RDD[DbRow], Genes)
   type Parameters = List[String]
-  type Output = List[Map[String, Any]]
+  type Output = ListMapStringAny
 
   val helpMsg =
     s"""Returns annotations about genes (exists in l1000, symbol).
@@ -43,10 +45,10 @@ object CheckSignatureFunctions extends Functions {
       .map{case (gene, optionTranslation) =>
         (gene, optionTranslation.isDefined, tt.getOrElse(gene,""))}
 
-    l1000OrNot.map{case (query, inL1000, symbol) =>
-                      Map("query" -> query, "inL1000" -> inL1000, "symbol" -> symbol)
+    ListMapStringAny(l1000OrNot.map{case (query, inL1000, symbol) =>
+        		                     Map("query" -> query, "inL1000" -> inL1000, "symbol" -> symbol)
     }
-
+	)	
   }
 
   def checkSignature = this.result _

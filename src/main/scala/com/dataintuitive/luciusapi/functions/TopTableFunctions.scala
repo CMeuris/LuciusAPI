@@ -9,11 +9,13 @@ import org.apache.spark.rdd.RDD
 
 import scala.collection.immutable.Map
 
+case class ArrayMapStringAny(Result: Array[Map[String, Any]])
+
 object TopTableFunctions extends Functions {
 
   type Input = (RDD[DbRow], Genes)
   type Parameters = (String, Int, Int, List[String], List[String])
-  type Output = Array[Map[String, Any]]
+  type Output = ArrayMapStringAny
 
   val helpMsg =
     s"""
@@ -147,7 +149,7 @@ object TopTableFunctions extends Functions {
           .sortBy{case (z, x) => z}
           .map(entry => extractFeatures(entry, features))
 
-    result.map(_.zip(features).map(_.swap).toMap)
+    ArrayMapStringAny(result.map(_.zip(features).map(_.swap).toMap))
 
   }
 

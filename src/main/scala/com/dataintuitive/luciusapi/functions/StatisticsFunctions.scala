@@ -5,11 +5,13 @@ import com.dataintuitive.luciuscore.GeneModel.Genes
 import com.dataintuitive.luciuscore.Model.DbRow
 import scala.collection.immutable.Map
 
+case class MapStringLong(Result: Map[String, Long])
+
 object StatisticsFunctions extends Functions {
 
   type Input = (RDD[DbRow], Genes)
   type Parameters = Null
-  type Output = Map[String, Any]
+  type Output = MapStringLong
 
   val helpMsg = "Return general statistics about the dataset.\nNo input is required. Pass null for parameters in Scala"
 
@@ -21,9 +23,9 @@ object StatisticsFunctions extends Functions {
 
     val (db, genes) = data
 
-    Map("samples"   -> db.count,
-        "genes"     -> genes.genes.length,
-        "compounds" -> db.map(_.compoundAnnotations.compound.name).distinct.count
+    MapStringLong(Map("samples"   -> db.count,
+        			  "genes"     -> genes.genes.length,
+        			  "compounds" -> db.map(_.compoundAnnotations.compound.name).distinct.count)
     )
   }
 

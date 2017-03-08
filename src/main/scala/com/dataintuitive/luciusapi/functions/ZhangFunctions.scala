@@ -8,11 +8,13 @@ import com.dataintuitive.luciuscore.ZhangScoreFunctions._
 import org.apache.spark.rdd.RDD
 import scala.collection.immutable.Map
 
+case class ArrayMapStringAny(Result: Array[Map[String, Any]])
+
 object ZhangFunctions extends Functions {
 
   type Input = (RDD[DbRow], Genes)
   type Parameters = (Array[String], Boolean)
-  type Output = Array[Map[String, Any]]
+  type Output = ArrayMapStringAny
 
   val helpMsg =
     s"""
@@ -69,7 +71,7 @@ object ZhangFunctions extends Functions {
 
     val result = annotatedSimilarity.collect
 
-    result.map{case (i, z, j, pwid) => Map("indexNew" -> i, "indexOld" -> j, "zhang" -> z, "pwid" -> pwid)}
+    ArrayMapStringAny(result.map{case (i, z, j, pwid) => Map("indexNew" -> i, "indexOld" -> j, "zhang" -> z, "pwid" -> pwid)})
 
   }
 
