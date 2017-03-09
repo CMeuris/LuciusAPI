@@ -6,13 +6,11 @@ import org.apache.spark.rdd.RDD
 
 import scala.collection.immutable.Map
 
-case class ArrayMapStringString(Result: Array[Map[String, String]])
-
 object CompoundsFunctions extends Functions {
 
   type Input = (RDD[DbRow], Genes)
   type Parameters = (String, String, Int)
-  type Output = ArrayMapStringString
+  type Output = Array[Map[String, String]]
 
   val helpMsg =
     s"""Returns a list of compounds and corresponding samples matching a query, optionally with a limit on the number of results.
@@ -65,8 +63,8 @@ object CompoundsFunctions extends Functions {
 
     // Should we limit the result set?
     limitOutput match {
-      case true  => ArrayMapStringString(resultRDDasMap.take(limit))
-      case false => ArrayMapStringString(resultRDDasMap.collect)
+      case true  => resultRDDasMap.take(limit)
+      case false => resultRDDasMap.collect
     }
 
   }

@@ -11,13 +11,11 @@ import org.apache.spark.rdd.RDD
 
 import scala.collection.immutable.Map
 
-case class SeqMapStringAny(Result: Seq[Map[String, Any]])
-
 object BinnedZhangFunctions extends Functions {
 
   type Input = (RDD[DbRow], Genes)
   type Parameters = (Array[String], Int, Int)
-  type Output = SeqMapStringAny
+  type Output = Seq[Map[String, Any]]
 
   val helpMsg =
     s"""
@@ -57,9 +55,9 @@ object BinnedZhangFunctions extends Functions {
     val zhangStripped = zhangAdded.map(_._1)
 
     if (binsY > 0)
-      SeqMapStringAny(bin2D(zhangStripped, binsX, binsY))
+      bin2D(zhangStripped, binsX, binsY)
     else
-      SeqMapStringAny(bin1D(zhangStripped, binsX))
+      bin1D(zhangStripped, binsX)
 
 //    result.map{case (i, z, j, pwid) => Map("indexNew" -> i, "indexOld" -> j, "zhang" -> z, "pwid" -> pwid)}
 

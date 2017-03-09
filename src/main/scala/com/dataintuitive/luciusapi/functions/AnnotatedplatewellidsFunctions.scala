@@ -9,13 +9,11 @@ import org.apache.spark.rdd.RDD
 
 import scala.collection.immutable.Map
 
-case class ArrayMapStringAny(Result: Array[Map[String, Any]])
-
 object AnnotatedplatewellidsFunctions extends Functions {
 
   type Input = (RDD[DbRow], Genes)
   type Parameters = (String, Int, List[String], List[String], List[String])
-  type Output = ArrayMapStringAny
+  type Output = Array[Map[String, Any]]
 
   val helpMsg =
     s"""Returns a table with annotations about platewellids/samples, optionally with zhang score.
@@ -165,7 +163,7 @@ object AnnotatedplatewellidsFunctions extends Functions {
       .sortBy{case (z, x) => -z}
       .map(entry => extractFeatures(entry, features))
 
-    ArrayMapStringAny(result.map(_.zip(features).map(_.swap).toMap))
+    result.map(_.zip(features).map(_.swap).toMap)
 
   }
 
