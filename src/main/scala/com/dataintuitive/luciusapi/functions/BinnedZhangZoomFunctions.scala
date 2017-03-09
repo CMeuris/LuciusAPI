@@ -10,13 +10,13 @@ import org.apache.spark.rdd.RDD
 
 import scala.collection.immutable.Map
 
-case class SeqMapStringAny(Result: Map[String, Any])
+case class SeqMapStringAnyZoom(Result: Seq[Map[String, Any]])
 
 object BinnedZhangZoomFunctions extends Functions {
 
   type Input = (RDD[DbRow], Genes)
   type Parameters = (Array[String], Int, Int, Int, Int)
-  type Output = SeqMapStringAny
+  type Output = SeqMapStringAnyZoom
 
   val helpMsg =
     s"""
@@ -69,7 +69,7 @@ object BinnedZhangZoomFunctions extends Functions {
 
     val result = annotatedSimilarity.collect
 
-    SeqMapStringAny(result.map{case (i, z, j, pwid) => Map("indexNew" -> i, "indexOld" -> j, "zhang" -> z, "pwid" -> pwid)})
+    SeqMapStringAnyZoom(result.map{case (i, z, j, pwid) => Map("indexNew" -> i, "indexOld" -> j, "zhang" -> z, "pwid" -> pwid)})
 
 
 //    result.map{case (i, z, j, pwid) => Map("indexNew" -> i, "indexOld" -> j, "zhang" -> z, "pwid" -> pwid)}
