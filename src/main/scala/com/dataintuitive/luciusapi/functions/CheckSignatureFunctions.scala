@@ -12,7 +12,7 @@ object CheckSignatureFunctions extends Functions {
 
   type Input = (RDD[DbRow], Genes)
   type Parameters = List[String]
-  type Output = List[Map[String, Any]]
+  type Output = ListMapStringAny
 
   val helpMsg =
     s"""Returns annotations about genes (exists in l1000, symbol).
@@ -43,10 +43,10 @@ object CheckSignatureFunctions extends Functions {
       .map{case (gene, optionTranslation) =>
         (gene, optionTranslation.isDefined, tt.getOrElse(gene,""))}
 
-    l1000OrNot.map{case (query, inL1000, symbol) =>
-                      Map("query" -> query, "inL1000" -> inL1000, "symbol" -> symbol)
+    ListMapStringAny(l1000OrNot.map{case (query, inL1000, symbol) =>
+                                     Map("query" -> query, "inL1000" -> inL1000, "symbol" -> symbol)
     }
-
+    )
   }
 
   def checkSignature = this.result _

@@ -15,8 +15,8 @@ object HistogramFunctions extends Functions {
 
   type Input = (RDD[DbRow], Genes)
   type Parameters = (String, List[String], List[String], Int)
-  type Output = Array[Map[String, BigDecimal]]
-
+  type Output = ArrayMapStringBigDecimal
+  
   val helpMsg =
     s"""
      """.stripMargin
@@ -70,9 +70,9 @@ object HistogramFunctions extends Functions {
         .sortBy(-_._1)
 
     if (featuresSpecified)
-      histogram2D(zhangAndFeaturesAddedStrippedSorted, featuresQuery, nrBins, -1.0, 1.0)
+      ArrayMapStringBigDecimal(histogram2D(zhangAndFeaturesAddedStrippedSorted, featuresQuery, nrBins, -1.0, 1.0))
     else
-      histogram1D(zhangAndFeaturesAddedStrippedSorted.map(_._1), nrBins, -1.0, 1.0)
+      ArrayMapStringBigDecimal(histogram1D(zhangAndFeaturesAddedStrippedSorted.map(_._1), nrBins, -1.0, 1.0))
 
   }
 

@@ -71,7 +71,8 @@ object zhang extends SparkJob with NamedRddSupport with Globals {
         "header" -> header(input, parameters),
         "data"   -> result(input, parameters)
       )
-      case _ => result(input, parameters).map(_.values.toList)
+      //case _ => result(input, parameters).map(_.values.toList)
+      case _ => result(input, parameters).Result.map(_.values.toList)
     }
 
   }

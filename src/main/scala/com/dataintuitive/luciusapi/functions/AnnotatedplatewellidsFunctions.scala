@@ -13,8 +13,8 @@ object AnnotatedplatewellidsFunctions extends Functions {
 
   type Input = (RDD[DbRow], Genes)
   type Parameters = (String, Int, List[String], List[String], List[String])
-  type Output = Array[Map[String, Any]]
-
+  type Output = ArrayMapStringAny
+  
   val helpMsg =
     s"""Returns a table with annotations about platewellids/samples, optionally with zhang score.
         |
@@ -163,7 +163,7 @@ object AnnotatedplatewellidsFunctions extends Functions {
       .sortBy{case (z, x) => -z}
       .map(entry => extractFeatures(entry, features))
 
-    result.map(_.zip(features).map(_.swap).toMap)
+    ArrayMapStringAny(result.map(_.zip(features).map(_.swap).toMap))
 
   }
 
